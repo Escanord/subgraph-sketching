@@ -33,7 +33,8 @@ from src.runners.inference import test
 def run(args):
     args = initialise_wandb(args)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"executing on {device}")
+    print("cc")
+    print(f"executing on {device} ")
     results_list = []
     train_func = get_train_func(args)
     for rep in range(args.reps):

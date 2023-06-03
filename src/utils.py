@@ -70,6 +70,7 @@ def get_pos_neg_edges(data, sample_frac=1):
     :param data: A train, val or test split returned by RandomLinkSplit
     :return: positive edge_index, negative edge_index.
     """
+    # edge_index is message passing edge while edge_label_index is supervision edge
     device = data.edge_index.device
     edge_index = data['edge_label_index'].to(device)
     labels = data['edge_label'].to(device)

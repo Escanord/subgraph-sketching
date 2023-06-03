@@ -1,0 +1,5 @@
+.DS_Store
+env/
+subgraph_sketching.egg-info/
+dataset/
+__pycache__/
