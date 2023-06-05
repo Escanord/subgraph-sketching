@@ -23,7 +23,7 @@ def get_train_func(args):
         train_func = train
     return train_func
 
-
+# BUDDY pre-process subgraph features & node features in data.py/HashDataSet
 def train_buddy(model, optimizer, train_loader, args, device, emb=None):
     print('starting training')
     t0 = time.time()

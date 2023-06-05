@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARN)
 
 
+# simple MLP as a Link Predictor
 class LinkPredictor(torch.nn.Module):
     def __init__(self, args, use_embedding=False):
         super(LinkPredictor, self).__init__()
@@ -70,6 +71,7 @@ class LinkPredictor(torch.nn.Module):
 
         return x
 
+    # sf = subgraph features
     def forward(self, sf, node_features, emb=None):
         sf = self.label_lin_layer(sf)
         sf = self.bn_labels(sf)
@@ -128,6 +130,7 @@ class ELPH(torch.nn.Module):
             self.sign_embedding = SIGNEmbedding(args.hidden_channels, args.hidden_channels, args.hidden_channels,
                                                 args.sign_k, args.sign_dropout)
 
+    # builds hidden GNN layers
     def _convolution_builder(self, num_features, hidden_channels, args):
         self.convs = torch.nn.ModuleList()
         if args.feature_prop in {'residual', 'cat'}:  # use a linear encoder
@@ -236,6 +239,7 @@ class BUDDY(torch.nn.Module):
         self.append_normalised = args.add_normed_features
         ra_counter = 1 if args.use_RA else 0
         num_labelling_features = args.max_hash_hops * (args.max_hash_hops + 2)
+        # self.dim is number of subgraph features
         self.dim = num_labelling_features * 2 if self.append_normalised else num_labelling_features
         self.use_RA = args.use_RA
         self.sign_k = args.sign_k

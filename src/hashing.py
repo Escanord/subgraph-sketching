@@ -29,6 +29,7 @@ class MinhashPropagation(MessagePassing):
 
     @torch.no_grad()
     def forward(self, x, edge_index):
+        # -x so aggregation function is min
         out = self.propagate(edge_index, x=-x)
         return -out
 
@@ -86,6 +87,7 @@ class ElphHashes(object):
         """
         return np.ceil(np.log2(bits + 1)).astype(int)
 
+    # get the number of leading zeros in each element of bits
     def _get_hll_rank(self, bits):
         """
         get the number of leading zeros when each int in bits is represented as a self.max_rank-p bit array
@@ -116,6 +118,7 @@ class ElphHashes(object):
     def initialise_minhash(self, n_nodes):
         init_hv = np.ones((n_nodes, self.num_perm), dtype=np.int64) * self._max_minhash
         a, b = self._init_permutations(self.num_perm)
+        # hashing id of the nodes
         hv = hash_array(np.arange(1, n_nodes + 1))
         phv = np.bitwise_and((a * np.expand_dims(hv, 1) + b) % self._mersenne_prime, self._max_minhash)
         hv = np.minimum(phv, init_hv)

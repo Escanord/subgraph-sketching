@@ -154,12 +154,14 @@ class SIGNEmbedding(SIGNBaseClass):
         if self.adj_t is None:
             self.adj_t = self.cache_adj_t(adj_t, num_nodes)
         hs = []
+        # individual linear layer because the paper is using SIGNN architecture
         for lin, bn in zip(self.lins, self.bns):
             h = lin(x)
             h = bn(h)
             h = F.relu(h)
             h = F.dropout(h, p=self.dropout, training=self.training)
             hs.append(h)
+            # @ is matrix mutiplication so it is pre-computing XA^r
             x = self.adj_t @ x
         h = torch.cat(hs, dim=-1)
         x = self.lin_out(h)

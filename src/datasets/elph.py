@@ -127,6 +127,7 @@ class HashDataset(Dataset):
         else:
             print('constructing node features')
             start_time = time()
+            # pre-process convolutional nodes' features in k hops away
             x = self._generate_sign_features(data, edge_index, edge_weight, sign_k)
             print("Preprocessed features in: {:.2f} seconds".format(time() - start_time))
             if self.load_features:
